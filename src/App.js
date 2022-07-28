@@ -97,7 +97,7 @@ const App = () => {
     };
 
     // Array.concat 함수를 이용하여 새로운 투두리스트를 등록합니다.
-
+    setTodoText()
     onModalClose();
     setTodoText('');
   },[todoLists, date, todoText]);
@@ -106,14 +106,14 @@ const App = () => {
   const onTodoToggle = useCallback((id) => {
 
     // Array.map 함수를 이용하여 생성된 리스트에서 선택된 리스트의 done 변수값을 true -> false, false -> true로 바꿉니다.
-
+    setTodoLists()
   },[todoLists]);
 
   /** onTodoDelete : 투두리스트 삭제 함수 */
   const onTodoDelete = useCallback((id)=> {
 
     // Array.filter 함수를 이용하여 생성된 리스트에서 선택된 리스트를 제거합니다.
-
+    setTodoLists()
   },[todoLists]);
 
   return (
@@ -135,29 +135,34 @@ const App = () => {
           </Title>
           <hr />
           <div style={{height:'360px'}}>
-            <TodoItemContainer done={false}>  {/* 체크시 글씨 css를 적용 */}
-              <FormControlLabel 
-                label={'example1'} 
-                control={
-                  <Checkbox 
-                     // 투두리스트 체크값 
-                    // 투두리스트 확인 클릭 이벤트
-                    icon={<SportsBarOutlinedIcon />} 
-                    checkedIcon={<SportsBarIcon />} 
-                  />
-                }
-              />
-              <IconButton
-                // 삭제 이벤트
+            {todoLists.length !== 0 ? todoLists.filter(list=> list.date === date.toDateString()).map(list => (
+              <TodoItemContainer 
+                done={list.done}
+                key={list.id}
               > 
-                <DeleteIcon />
-              </IconButton>
-            </TodoItemContainer>
+                <FormControlLabel 
+                  label={list.todo} 
+                  control={
+                    <Checkbox 
+                      checked={list.done}
+                      onChange={} // 투두리스트 확인 클릭 이벤트
+                      icon={<SportsBarOutlinedIcon />} 
+                      checkedIcon={<SportsBarIcon />} 
+                    />
+                  }
+                />
+                <IconButton
+                  onClick={} // 삭제 이벤트
+                > 
+                  <DeleteIcon />
+                </IconButton>
+              </TodoItemContainer>
+            )) : null}
           </div>
           <hr />
           <FlexDiv style={{alignItems:'center'}}>
             <div>
-              {1} {/* 해당 날짜에 투두 리스트 카운트를 나타냅니다. */}
+              {todoLists.filter(list=>list.date === date.toDateString())} 
               TASK
             </div>
             <Button endIcon={<AddIcon />} onClick={onModalOpen}>ADD NEW</Button>
