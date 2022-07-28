@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { CalendarPicker } from "@mui/x-date-pickers/CalendarPicker";
-import { Paper, Checkbox, FormControlLabel, IconButton, Button, Dialog, TextField, Modal } from '@mui/material';
+import { Paper, Checkbox, FormControlLabel, IconButton, Button, Dialog, TextField } from '@mui/material';
 import SportsBarOutlinedIcon from '@mui/icons-material/SportsBarOutlined';
 import SportsBarIcon from '@mui/icons-material/SportsBar';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -97,7 +97,7 @@ const App = () => {
     };
 
     // Array.concat 함수를 이용하여 새로운 투두리스트를 등록합니다.
-    setTodoText()
+    setTodoText(todoLists.concat(newTodo))
     onModalClose();
     setTodoText('');
   },[todoLists, date, todoText]);
@@ -106,14 +106,16 @@ const App = () => {
   const onTodoToggle = useCallback((id) => {
 
     // Array.map 함수를 이용하여 생성된 리스트에서 선택된 리스트의 done 변수값을 true -> false, false -> true로 바꿉니다.
-    setTodoLists()
+    var newTodo = todoLists.map(todo => todo.id === id ? {...todo, done: !todo.done} : todo);
+    setTodoLists(newTodo)
   },[todoLists]);
 
   /** onTodoDelete : 투두리스트 삭제 함수 */
   const onTodoDelete = useCallback((id)=> {
 
     // Array.filter 함수를 이용하여 생성된 리스트에서 선택된 리스트를 제거합니다.
-    setTodoLists()
+    var newTodo = todoLists.filter(todo => todo.id !== id)
+    setTodoLists(newTodo)
   },[todoLists]);
 
   return (
@@ -145,14 +147,14 @@ const App = () => {
                   control={
                     <Checkbox 
                       checked={list.done}
-                      onChange={} // 투두리스트 확인 클릭 이벤트
+                      onChange={()=>onTodoToggle(list.id)} // 투두리스트 확인 클릭 이벤트
                       icon={<SportsBarOutlinedIcon />} 
                       checkedIcon={<SportsBarIcon />} 
                     />
                   }
                 />
                 <IconButton
-                  onClick={} // 삭제 이벤트
+                  onClick={()=>onTodoDelete(list.id)} // 삭제 이벤트
                 > 
                   <DeleteIcon />
                 </IconButton>
@@ -162,7 +164,7 @@ const App = () => {
           <hr />
           <FlexDiv style={{alignItems:'center'}}>
             <div>
-              {todoLists.filter(list=>list.date === date.toDateString())} 
+              {todoLists.filter(list=>list.date === date.toDateString()).length} 
               TASK
             </div>
             <Button endIcon={<AddIcon />} onClick={onModalOpen}>ADD NEW</Button>
