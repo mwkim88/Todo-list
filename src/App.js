@@ -97,7 +97,7 @@ const App = () => {
     };
 
     // Array.concat 함수를 이용하여 새로운 투두리스트를 등록합니다.
-    setTodoText(todoLists.concat(newTodo))
+    setTodoLists(todoLists.concat(newTodo))
     onModalClose();
     setTodoText('');
   },[todoLists, date, todoText]);
