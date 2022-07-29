@@ -95,9 +95,8 @@ const App = () => {
       todo: todoText,
       done: false
     };
-
     // Array.concat 함수를 이용하여 새로운 투두리스트를 등록합니다.
-    setTodoLists()
+    setTodoLists(todoLists.concat(newTodo))
     onModalClose();
     setTodoText('');
   },[todoLists, date, todoText]);
@@ -105,16 +104,17 @@ const App = () => {
   /** onTodoToggle : 투두리스트 확인 함수 */
   const onTodoToggle = useCallback((id) => {
 
+    
     // Array.map 함수를 이용하여 생성된 리스트에서 선택된 리스트의 done 변수값을 true -> false, false -> true로 바꿉니다.
-    var newTodo = todoLists.map();
+    var newTodo = todoLists.map(todoLists.done? onModalClose : onModalOpen);
+    // {newTodo.done? onModalClose : onModalOpen};
     setTodoLists(newTodo)
   },[todoLists]);
 
   /** onTodoDelete : 투두리스트 삭제 함수 */
   const onTodoDelete = useCallback((id)=> {
-
     // Array.filter 함수를 이용하여 생성된 리스트에서 선택된 리스트를 제거합니다.
-    var newTodo = todoLists.filter()
+    var newTodo = todoLists.filter((todo)=>todo.id!==id);
     setTodoLists(newTodo)
   },[todoLists]);
 
